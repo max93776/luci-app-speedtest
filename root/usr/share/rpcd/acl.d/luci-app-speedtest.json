@@ -1,0 +1,11 @@
+{
+    "luci-app-speedtest": {
+	"description": "Grant UCI access for luci-app-speedtest",
+	"read": {
+	    "uci": [ "speedtest" ]
+	},
+	"write": {
+	    "uci": [ "speedtest" ]
+	}
+    }
+}

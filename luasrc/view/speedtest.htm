@@ -1,0 +1,70 @@
+<%+header%>
+
+<h2>Speedtest</h2>
+<p>Hier kannst du einen Speedtest mit einer festen IP starten.</p>
+<div class="alert-message notice">
+<p style="color:red;">Die Ausfuehrung des Speedtests kann die gesamte Internetgeschwindikeit erheblich einschraenken.</p>
+</div>
+<div class="alert-message notice">
+<p style="color:red;">Verbindungen, die parallel im Hintergrund laufen, koennen die Resultate des Speedtests erheblich verschlechtern.</p>
+</div>
+<form id="speedtest-form">
+    <label for="speedtest_mode">Anzahl der parallelen Verbindungen auswaehlen:</label>
+    <select id="speedtest_mode" name="speedtest_mode">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+	<option value="4">4</option>
+	<option value="5">5</option>
+	<option value="7">7</option>
+	<option value="10" selected>10</option>
+	<option value="15">15</option>
+	<option value="20">20</option>
+    </select>
+    <br><br>
+    <label for="speedtest_mode_2">Art des Tests auswaehlen:</label>
+    <select id="speedtest_mode_2" name="speedtest_mode_2">
+	<option value="1" selected>download</option>
+	<option value="2">upload</option>
+    </select>
+    <br><br>
+    <button class="cbi-button cbi-button-apply" type="submit">Speedtest starten</button>
+</form>
+
+<pre id="result" style="border:1px solid #ccc; padding:10px; background:#f8f8f8; white-space:pre-wrap;"></pre>
+
+<script>
+document.getElementById("speedtest-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    let mode = document.getElementById("speedtest_mode").value;
+    let mode_2 = document.getElementById("speedtest_mode_2").value;
+    let resultDiv = document.getElementById("result");
+    let submitButton = document.querySelector("button[type='submit']");
+
+    // Button deaktivieren
+    submitButton.disabled = true;
+    resultDiv.innerHTML = "Speedtest laeuft... Bitte warten.";
+
+    fetch('<%=url("admin/network/speedtest/run")%>', {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "speedtest_mode=" + encodeURIComponent(mode) + "&speedtest_mode_2=" + encodeURIComponent(mode_2) 
+    })
+    .then(response => response.json())
+    .then(data => {
+        resultDiv.innerHTML = "Ergebnis:\n" + data.output;
+    })
+    .catch(error => {
+        resultDiv.innerHTML = "Fehler beim Starten des Speedtests!";
+    })
+    .finally(() => {
+        // Button nach 10 ms wieder aktivieren
+        setTimeout(() => {
+            submitButton.disabled = false;
+        }, 10); 
+    });
+});
+</script>
+
+<%+footer%>
