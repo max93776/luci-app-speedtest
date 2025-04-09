@@ -13,6 +13,13 @@ function run_speedtest()
     local speedtest_mode = http.formvalue("speedtest_mode")
     local speedtest_mode_2 = http.formvalue("speedtest_mode_2")
 
+    local speedtest_mode_num = tonumber(speedtest_mode)
+    if not speedtest_mode_num then
+        http.prepare_content("application/json")
+        http.write_json({status = "error", message = "Fehler beim Ausfuehren von iperf (1)"})
+        return
+    end
+
     cmd = "iperf3 -c ..." -- insert your server here
     if speedtest_mode_2 == "1" then
 	cmd = cmd .. " -R" 
