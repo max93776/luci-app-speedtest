@@ -19,4 +19,9 @@ This repo contains a speedtest app for the OpenMPTCProuter LuCI:
 	cmd = "iperf3 -c a209.speedtest.wobcom.de" -- insert your server here
 	...
 	```
-- List of public iperf3 servers can be found ![here](https://github.com/R0GGER/public-iperf3-servers)here
+- List of public iperf3 servers can be found [here](https://iperf3serverlist.net/)
+## Usage
+- select number of parallel connections
+- select download or upload
+- press button
+![image](https://github.com/user-attachments/assets/0f7559ac-c031-4cb1-82df-67681729da9c)
